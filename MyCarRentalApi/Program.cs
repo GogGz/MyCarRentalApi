@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using MyCarRentalApi.DAL.Context;
+using MyCarRentalApi.DAL.Repository;
 
 namespace MyCarRentalApi
 {
@@ -15,7 +17,24 @@ namespace MyCarRentalApi
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen( c => {
+                c.SwaggerDoc("V1", new OpenApiInfo
+                {
+                    Title = "MyCarRentalAPI",
+                    Version = "V1",
+                    Description = "A Brief Description of My APIs",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Support",
+                        Email = "gohar_ghazaryan@outlook.com",
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MyCarRentalAPI License",
+                        Url = new Uri("https://www.enterprise.am/terms-and-conditions")
+                    }
+                });
+            });
 
             builder.Services.AddDbContext<MyCarRentalApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDatabaseConnection")));
             var app = builder.Build();
@@ -24,13 +43,18 @@ namespace MyCarRentalApi
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/V1/swagger.json", "My API V1");
+                });
 
-            app.UseHttpsRedirection();
+
+            }
+           
+
+           app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
