@@ -10,6 +10,6 @@ namespace MyCarRentalApi.DAL.Entities
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string DrivingLisence { get; set; }
+        public string DrivingLicense { get; set; }
     }
 }

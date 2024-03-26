@@ -1,7 +1,10 @@
-﻿using MyCarRentalApi.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCarRentalApi.DAL.Context;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Models.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MyCarRentalApi.DAL.Concrete
 {
-    internal class EFCustomerRepository : ICustomerRepository
+    public class EFCustomerRepository : ICustomerRepository
     {
         private readonly MyCarRentalApiDbContext _context;
 
@@ -17,8 +20,14 @@ namespace MyCarRentalApi.DAL.Concrete
         {
             _context = dbContext;
         }
-        public async Task AddCustomerAsync(Customer customer)
+        public async Task AddCustomerAsync(AddCustomerRequest Entity)
         {
+            Customer customer = new Customer();
+
+            customer.Name = Entity.Name;
+            customer.Surname = Entity.Surname;
+            customer.DrivingLicense = Entity.DrivingLicense;
+
             await _context.AddAsync(customer);
             await _context.SaveChangesAsync();
         }
@@ -36,10 +45,7 @@ namespace MyCarRentalApi.DAL.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Customer> GetAllCustomersAsync()
-        {
-            return _context.Customers.AsQueryable();
-        }
+        public async Task<IEnumerable> GetAllCustomersAsync() => await _context.Customers.ToListAsync();
 
         public async Task<Customer?> GetCustomerByIdAsync(int id)
         {

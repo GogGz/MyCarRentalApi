@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyCarRentalApi.DAL.Models
+namespace MyCarRentalApi.Models.Models
 {
     public class AddCustomerRequest
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string DrivingLicense { get; set; }
+
     }
 }

@@ -1,7 +1,10 @@
-﻿using MyCarRentalApi.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCarRentalApi.DAL.Context;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Models.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MyCarRentalApi.DAL.Concrete
 {
-    internal class EFCarRepository : ICarRepository
+    public class EFCarRepository : ICarRepository
     {
         private readonly MyCarRentalApiDbContext _context;
 
@@ -18,8 +21,13 @@ namespace MyCarRentalApi.DAL.Concrete
             _context = dbContext;
         }
 
-        public async Task AddCarAsync(Car car)
+        public async Task AddCarAsync(AddCarRequest entity)
         {
+            Car car = new Car();
+
+            car.Number =  entity.Number;
+            car.Model = entity.Model;
+
             await _context.AddAsync(car);
             await _context.SaveChangesAsync();
         }
@@ -37,7 +45,7 @@ namespace MyCarRentalApi.DAL.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Car> GetAllCarsAsync() => _context.Cars.AsQueryable();
+        public async Task<IEnumerable> GetAllCarsAsync() =>await _context.Cars.ToListAsync();
 
         public async Task<Car?> GetCarByIdAsync(int id)
         {

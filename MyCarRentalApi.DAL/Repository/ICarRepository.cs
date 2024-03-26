@@ -1,4 +1,5 @@
 ﻿using MyCarRentalApi.DAL.Entities;
+using MyCarRentalApi.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace MyCarRentalApi.DAL.Repository
 {
     public interface ICarRepository
     {
-        IQueryable<Car> GetAllCarsAsync();
+        IEnumerable<Car> GetAllCarsAsync();
         Task<Car?> GetCarByIdAsync(int id);
-        Task AddCarAsync(Car car);
+        Task AddCarAsync(AddCarRequest Entity);
         Task UpdateCarAsync(Car car);
         Task DeleteCarAsync(int id);
     }
