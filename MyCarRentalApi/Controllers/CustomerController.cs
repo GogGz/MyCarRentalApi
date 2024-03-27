@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Writers;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Models.Models;
 using System.Runtime.InteropServices;
 
 namespace MyCarRentalApi.Controllers
@@ -22,7 +23,7 @@ namespace MyCarRentalApi.Controllers
         [HttpGet]
         public IActionResult GetAllCustomers()
         {
-            var customers = _customerRepository.GetAllCustomersAsync().ToList();
+            var customers = _customerRepository.GetAllCustomersAsync();
 
             return Ok(customers);
         }
@@ -41,7 +42,7 @@ namespace MyCarRentalApi.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> AddCustomer(Customer customer)
+        public async Task <IActionResult> AddCustomer(AddCustomerRequest customer)
         {
             await _customerRepository.AddCustomerAsync(customer);
 
@@ -60,7 +61,7 @@ namespace MyCarRentalApi.Controllers
 
             existingCustomer.Name = customer.Name;
             existingCustomer.Surname = customer.Surname;
-            existingCustomer.DrivingLisence = customer.DrivingLisence;
+            existingCustomer.DrivingLicense = customer.DrivingLicense;
 
             return Ok(existingCustomer);
 

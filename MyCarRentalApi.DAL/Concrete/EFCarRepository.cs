@@ -44,9 +44,8 @@ namespace MyCarRentalApi.DAL.Concrete
             _context.Remove(carRemove);
             await _context.SaveChangesAsync();
         }
-
-        public async Task<IEnumerable> GetAllCarsAsync() =>await _context.Cars.ToListAsync();
-
+        public async Task <IEnumerable<Car>> GetAllCarsAsync() => await _context.Cars.ToListAsync();
+        
         public async Task<Car?> GetCarByIdAsync(int id)
         {
             var carGet = await _context.Cars.FindAsync(id);
@@ -66,6 +65,8 @@ namespace MyCarRentalApi.DAL.Concrete
 
             await _context.SaveChangesAsync();
         }
-    
+
+       
+      
     }
 }

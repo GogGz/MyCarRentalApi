@@ -10,7 +10,7 @@ namespace MyCarRentalApi.DAL.Repository
 {
     public interface ICarRepository
     {
-        IEnumerable<Car> GetAllCarsAsync();
+        Task <IEnumerable<Car>> GetAllCarsAsync();
         Task<Car?> GetCarByIdAsync(int id);
         Task AddCarAsync(AddCarRequest Entity);
         Task UpdateCarAsync(Car car);

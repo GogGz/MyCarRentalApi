@@ -25,7 +25,7 @@ namespace MyCarRentalApi.DAL.Configurations
                 .HasMaxLength(50);
 
             builder
-                .Property(b => b.DrivingLisence)
+                .Property(b => b.DrivingLicense)
                 .IsRequired(true)
                 .HasMaxLength(50);
 

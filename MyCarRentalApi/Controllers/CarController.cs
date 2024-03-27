@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Models.Models;
 
 namespace MyCarRentalApi.Controllers
 {
@@ -26,7 +27,7 @@ namespace MyCarRentalApi.Controllers
         [HttpGet]
         public IActionResult GetCars()
         {
-            var cars = _carRepository.GetAllCarsAsync().ToList();
+            var cars = _carRepository.GetAllCarsAsync();
 
             return Ok(cars);
         }
@@ -39,7 +40,7 @@ namespace MyCarRentalApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Car car)
+        public async Task<IActionResult> Add(AddCarRequest car)
         {
 
             if (ModelState.IsValid)

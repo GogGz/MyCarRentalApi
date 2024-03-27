@@ -45,7 +45,7 @@ namespace MyCarRentalApi.DAL.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable> GetAllCustomersAsync() => await _context.Customers.ToListAsync();
+        public async Task<IEnumerable<Customer>> GetAllCustomersAsync() => await _context.Customers.ToListAsync();
 
         public async Task<Customer?> GetCustomerByIdAsync(int id)
         {
@@ -65,5 +65,5 @@ namespace MyCarRentalApi.DAL.Concrete
             await _context.SaveChangesAsync();
         }
 
-    }
+           }
 }
