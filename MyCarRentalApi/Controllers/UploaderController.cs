@@ -10,7 +10,7 @@ namespace MyCarRentalApi.Controllers
     public class UploaderController : ControllerBase
     {
         [HttpPost]
-        public string UploadFile([FromForm] AddImageRequest image)
+        public IActionResult UploadFile([FromForm] AddImageRequest image)
         {
             try
             {
@@ -21,15 +21,12 @@ namespace MyCarRentalApi.Controllers
                     image.File.CopyTo(stream);
 
                 }
-
             }
             catch (Exception ex)
             {
-                return "Image was not uploaded  " + ex.Message;
+                return BadRequest(ex.Message);
             }
-
-            return "Image uploaded successfuly";
-        
+            return Ok(image.FileName + " uploaded");
         }
     }
 }
