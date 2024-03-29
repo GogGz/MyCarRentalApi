@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Writers;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Interface;
 using MyCarRentalApi.Models.Models;
 using System.Runtime.InteropServices;
 
@@ -12,66 +13,52 @@ namespace MyCarRentalApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerService _customerService;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerService customerService)
         {
-            _customerRepository = customerRepository;
+            _customerService = customerService;
         }
 
 
         [HttpGet]
-        public IActionResult GetAllCustomers()
+        public async Task< IActionResult> GetAllCustomers()
         {
-            var customers = _customerRepository.GetAllCustomersAsync();
+            await _customerService.GetAllCustomersAsync();
 
-            return Ok(customers);
+            return Ok();
         }
 
         [HttpGet]
         public async Task <IActionResult> GetCustomerById(int id)
         {
-            var customer = await _customerRepository.GetCustomerByIdAsync(id);
+           await _customerService.GetCustomerByIdAsync(id);
 
-            if(customer == null)
-            {
-                return BadRequest("Customer not found");
-            }
-
-            return Ok(customer);
+            return Ok();
         }
 
         [HttpPost]
         public async Task <IActionResult> AddCustomer(AddCustomerRequest customer)
         {
-            await _customerRepository.AddCustomerAsync(customer);
+            await _customerService.AddCustomerAsync(customer);
 
-            return Ok(customer);
+            return Ok();
         }
 
         [HttpPost]
 
         public async Task<IActionResult> UpdateCustomer(Customer customer)
         {
-            var existingCustomer = await _customerRepository.GetCustomerByIdAsync(customer.Id);
-            if(existingCustomer == null)
-            {
-                return BadRequest("Customer not found");
-            }
+            await _customerService.UpdateCustomerAsync(customer);
 
-            existingCustomer.Name = customer.Name;
-            existingCustomer.Surname = customer.Surname;
-            existingCustomer.DrivingLicense = customer.DrivingLicense;
-
-            return Ok(existingCustomer);
-
+            return Ok();
         }
 
         [HttpPost]
 
         public async Task <IActionResult> DeleteCustomer(int id)
         {
-            var customer = await _customerRepository.GetCustomerByIdAsync(id);
+            var customer = await _customerService.GetCustomerByIdAsync(id);
 
             if(customer == null)
             {

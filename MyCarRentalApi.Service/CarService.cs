@@ -28,7 +28,7 @@ namespace MyCarRentalApi.Service
         
         public async Task InsertAsync(AddCarRequest model)
         {
-            Car car = new Car   ();
+            Car car = new Car();
 
             car.Number = model.Number;
             car.Model = model.Model;
