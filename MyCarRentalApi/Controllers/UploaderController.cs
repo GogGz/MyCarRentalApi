@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyCarRentalApi.Models.Models;
+using System.Drawing;
 
 namespace MyCarRentalApi.Controllers
 {
@@ -14,7 +15,11 @@ namespace MyCarRentalApi.Controllers
         {
             try
             {
-                string path = Path.Combine($"C:/Users/gohar/Desktop/Images", image.FileName);
+                
+                //  string path = Path.Combine($"C:/Users/gohar/Desktop/Images", image.FileName);
+               
+
+                string path = Path.Combine($"C:/Users/gohar/Desktop/Images");
 
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
@@ -26,7 +31,7 @@ namespace MyCarRentalApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return Ok(image.FileName + " uploaded");
+            return Ok();
         }
     }
 }

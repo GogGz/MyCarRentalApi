@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
 using MyCarRentalApi.Models.Models;
+using MyCarRentalApi.Service;
 
 namespace MyCarRentalApi.Controllers
 {
@@ -10,104 +11,51 @@ namespace MyCarRentalApi.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly ICarRepository _carRepository;
+        private readonly CarService _carService;
 
-        public CarController(ICarRepository carRepository)
+        public CarController(CarService carService)
         {
-            _carRepository = carRepository;
-        }
-
-        //private static List<Car> _cars = new List<Car>
-        //{
-        //    new Car { Id = 1, Model = "BMW", Price = 10000.00m, Number = "AS1234" },
-        //    new Car { Id = 2, Model = "Mercedes", Price = 2000.00m, Number = "DG9876" },
-        //    new Car { Id = 3, Model = "Audi", Price = 3000.00m, Number = "GY8765"},
-        //};
-
-        [HttpGet]
-        public IActionResult GetCars()
-        {
-            var cars = _carRepository.GetAllCarsAsync();
-
-            return Ok(cars);
+            _carService = carService;
+            
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> GetAllCars()
         {
-            Car car = new Car();
-            return Ok(car);
+            await _carService.GetAllAsync();
+
+            return Ok();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCarById(int id)
+        {
+            await _carService.GetByIdAsync(id);
+
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddCarRequest car)
+        public async Task<IActionResult> Add(AddCarRequest entity)
         {
-
-            if (ModelState.IsValid)
-            {
-                await _carRepository.AddCarAsync(car);
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return Ok(car);
-        }
-
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetCar(int id)
-        {
-            var car = _carRepository.GetCarByIdAsync(id);
-
-            if (car == null)
-            {
-                return NotFound();
-            }
-            return Ok(car);
+            await _carService.InsertAsync(entity);
+            return Ok();
+           
         }
 
 
         [HttpPost("{id}")]
-        public async Task<IActionResult> EditCar(int id, Car car)
+        public  IActionResult EditCar(Car car)
         {
-            if (id != car.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingCar = _carRepository.GetCarByIdAsync(id);
-
-            if (existingCar == null)
-            {
-                return NotFound();
-            }
-
+          _carService.Update(car);
+               
             return Ok(car);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(Car car)
-        {
-            if (ModelState.IsValid)
-            {
-                await _carRepository.UpdateCarAsync(car);
-
-                return RedirectToAction(nameof(GetCars));
-            }
-            return Ok(car);
-        }
-
 
 
         [HttpPost("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
-            var car = _carRepository.GetCarByIdAsync(id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-            await _carRepository.DeleteCarAsync(id);
+            await _carService.DeleteAsync(id);
 
             return Ok();
         }

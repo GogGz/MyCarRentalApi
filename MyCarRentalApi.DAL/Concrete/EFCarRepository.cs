@@ -61,7 +61,7 @@ namespace MyCarRentalApi.DAL.Concrete
 
         public async Task UpdateCarAsync(Car car)
         {
-            _context.Cars.Update(car);
+             _context.Cars.Update(car);
 
             await _context.SaveChangesAsync();
         }

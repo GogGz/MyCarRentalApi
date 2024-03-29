@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyCarRentalApi.DAL\MyCarRentalApi.DAL.csproj" />
+    <ProjectReference Include="..\MyCarRentalApi.Service\MyCarRentalApi.Service.csproj" />
   </ItemGroup>
 
 </Project>
