@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
+using MyCarRentalApi.Interface;
 using MyCarRentalApi.Models.Models;
 using MyCarRentalApi.Service;
 
@@ -11,20 +13,27 @@ namespace MyCarRentalApi.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly CarService _carService;
+        private readonly ICarService _carService;
 
-        public CarController(CarService carService)
+        private readonly IMapper _mapper;
+
+        public CarController(ICarService carService, IMapper mapper)
         {
             _carService = carService;
+            _mapper = mapper;
             
         }
 
-        [HttpGet]
+      //  private List<Car> listCars = new List<Car>();
+
+      [HttpGet]
         public async Task<IActionResult> GetAllCars()
         {
-            await _carService.GetAllAsync();
+            var resp = await _carService.GetAllAsync();
 
-            return Ok();
+            var allCars = _mapper.Map<GetAllCarsResponse>(resp.FirstOrDefault());
+
+            return Ok(allCars);
         }
         [HttpGet]
         public async Task<IActionResult> GetCarById(int id)

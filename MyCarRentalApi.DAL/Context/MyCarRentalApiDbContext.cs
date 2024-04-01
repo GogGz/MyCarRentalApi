@@ -3,6 +3,7 @@ using MyCarRentalApi.DAL.Configurations;
 using MyCarRentalApi.DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,10 @@ namespace MyCarRentalApi.DAL.Context
             modelBuilder.ApplyConfiguration(new CarConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
 
+            modelBuilder.Entity<Car>().HasData(
+               new() { Id = 1, Model = "BMW", Number = "123er56" },
+               new() { Id = 2, Model = "Mercedes", Number = "098gfr765" }
+            );  ;
 
         }
 

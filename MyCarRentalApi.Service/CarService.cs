@@ -1,4 +1,5 @@
-﻿using MyCarRentalApi.DAL.Entities;
+﻿using MyCarRentalApi.DAL.Concrete;
+using MyCarRentalApi.DAL.Entities;
 using MyCarRentalApi.DAL.Repository;
 using MyCarRentalApi.Interface;
 using MyCarRentalApi.Models.Models;
