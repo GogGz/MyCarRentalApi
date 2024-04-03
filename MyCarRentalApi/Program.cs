@@ -48,8 +48,6 @@ namespace MyCarRentalApi
                 });
             });
 
-
-
             builder.Services.AddDbContext<MyCarRentalApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDatabaseConnection")));
             var app = builder.Build();
 
