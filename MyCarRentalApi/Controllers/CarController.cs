@@ -31,16 +31,18 @@ namespace MyCarRentalApi.Controllers
         {
             var resp = await _carService.GetAllAsync();
 
-            var allCars = _mapper.Map<GetAllCarsResponse>(resp.FirstOrDefault());
+            var allCars = _mapper.Map<IEnumerable<GetCarResponse>>(resp);
 
             return Ok(allCars);
         }
         [HttpGet]
         public async Task<IActionResult> GetCarById(int id)
         {
-            await _carService.GetByIdAsync(id);
+           var resp =  await _carService.GetByIdAsync(id);
 
-            return Ok();
+            var getCar = _mapper.Map<GetCarResponse>(resp);
+
+            return Ok(getCar);
         }
 
         [HttpPost]
@@ -53,11 +55,20 @@ namespace MyCarRentalApi.Controllers
 
 
         [HttpPost("{id}")]
-        public  IActionResult EditCar(Car car)
+        public async Task<IActionResult> EditCar(int id, AddCarRequest request)
         {
-          _carService.Update(car);
-               
-            return Ok(car);
+            var carEntity = await _carService.GetByIdAsync(id);
+
+            if (carEntity is null)
+                return BadRequest("Not found");
+            carEntity.Model = request.Model;
+            carEntity.Number = request.Number;
+            carEntity.ModifiedDate= DateTime.Now;
+           
+            _carService.Update(carEntity);
+
+
+            return Ok(carEntity);
         }
 
 

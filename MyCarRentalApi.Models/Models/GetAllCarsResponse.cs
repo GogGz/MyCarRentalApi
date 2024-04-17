@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCarRentalApi.Models.Models
 {
-    public class GetAllCarsResponse
+    public class GetCarResponse
     {
         public string Model { get; set; }
         public decimal Price { get; set; }

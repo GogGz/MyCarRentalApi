@@ -10,5 +10,6 @@ namespace MyCarRentalApi.Models.Models
     {
         public string Number { get; set; }
         public string Model { get; set; }
+
     }
 }
