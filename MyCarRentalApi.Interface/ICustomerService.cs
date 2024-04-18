@@ -10,10 +10,10 @@ namespace MyCarRentalApi.Interface
 {
     public interface ICustomerService
     {
-        Task<IEnumerable<Customer>> GetAllCustomersAsync();
-        Task<Customer?> GetCustomerByIdAsync(int id);
-        Task AddCustomerAsync(AddCustomerRequest customer);
-        Task UpdateCustomerAsync(Customer customer);
-        Task DeleteCustomerAsync(int id);
+        Task<IEnumerable<Customer>> GetAllAsync();
+        Task<Customer?> GetByIdAsync(int id);
+        Task AddAsync(AddCustomerRequest customer);
+        void Update(AddCustomerRequest customer);
+        Task DeleteAsync(int id);
     }
 }

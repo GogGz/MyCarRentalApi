@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Writers;
 using MyCarRentalApi.DAL.Entities;
@@ -14,27 +15,34 @@ namespace MyCarRentalApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+       
+        private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerService customerService)
+
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         public async Task< IActionResult> GetAllCustomers()
         {
-            await _customerService.GetAllCustomersAsync();
+            var resp = await _customerService.GetAllCustomersAsync();
 
-            return Ok();
+            var allCustomers = _mapper.Map<IEnumerable<GetCustomerResponse>>(resp);
+
+            return Ok(allCustomers);
         }
 
         [HttpGet]
         public async Task <IActionResult> GetCustomerById(int id)
         {
-           await _customerService.GetCustomerByIdAsync(id);
+           var resp = await _customerService.GetCustomerByIdAsync(id);
+           var getCustomer = _mapper.Map<GetCarResponse>(resp);
 
-            return Ok();
+            return Ok(getCustomer);
         }
 
         [HttpPost]
@@ -47,9 +55,9 @@ namespace MyCarRentalApi.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> UpdateCustomer(Customer customer)
+        public async Task<IActionResult> UpdateCustomer(AddCustomerRequest customer)
         {
-            await _customerService.UpdateCustomerAsync(customer);
+             await _customerService.UpdateCustomerAsync(customer);
 
             return Ok();
         }

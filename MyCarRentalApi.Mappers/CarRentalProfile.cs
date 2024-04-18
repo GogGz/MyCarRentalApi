@@ -15,10 +15,8 @@ namespace MyCarRentalApi.Mappers
         public CarRentalProfile()
         {
             CreateMap<Car, GetCarResponse>().ReverseMap();
+
+            CreateMap<Customer,GetCustomerResponse>().ReverseMap();
         }
-
-
-
     }
-    
 }

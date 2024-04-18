@@ -15,30 +15,27 @@ namespace MyCarRentalApi.Controllers
     {
         private readonly ICarService _carService;
 
-        private readonly IMapper _mapper;
-
         public CarController(ICarService carService, IMapper mapper)
         {
             _carService = carService;
-            _mapper = mapper;
-            
+
+
         }
 
-      //  private List<Car> listCars = new List<Car>();
+        //  private List<Car> listCars = new List<Car>();
 
-      [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> GetAllCars()
         {
             var resp = await _carService.GetAllAsync();
 
-            var allCars = _mapper.Map<IEnumerable<GetCarResponse>>(resp);
-
-            return Ok(allCars);
+            return Ok(resp);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetCarById(int id)
         {
-           var resp =  await _carService.GetByIdAsync(id);
+            var resp = await _carService.GetByIdAsync(id);
 
             var getCar = _mapper.Map<GetCarResponse>(resp);
 
@@ -50,7 +47,7 @@ namespace MyCarRentalApi.Controllers
         {
             await _carService.InsertAsync(entity);
             return Ok();
-           
+
         }
 
 
@@ -63,8 +60,8 @@ namespace MyCarRentalApi.Controllers
                 return BadRequest("Not found");
             carEntity.Model = request.Model;
             carEntity.Number = request.Number;
-            carEntity.ModifiedDate= DateTime.Now;
-           
+            carEntity.ModifiedDate = DateTime.Now;
+
             _carService.Update(carEntity);
 
 
@@ -75,7 +72,10 @@ namespace MyCarRentalApi.Controllers
         [HttpPost("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
-            await _carService.DeleteAsync(id);
+            var car = await _carService.GetByIdAsync(id);
+            if (car is null)
+                return NotFound("missing car");
+            car.IsDeleted = true;
 
             return Ok();
         }
